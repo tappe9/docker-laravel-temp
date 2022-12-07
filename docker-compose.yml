@@ -49,6 +49,7 @@ services:
     build:
       context: .
       dockerfile: ./infra/docker/mysql/Dockerfile
+    container_name: mysql_host
     ports:
       - target: 3306
         published: ${DB_PUBLISHED_PORT:-3306}
@@ -65,6 +66,17 @@ services:
       - MYSQL_USER=${DB_USERNAME:-phper}
       - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOSTS=mysql_host
+    - PMA_USER=phper
+    - PMA_PASSWORD=secret
+    ports:
+    - 8080:80
 
   mailhog:
     image: mailhog/mailhog
