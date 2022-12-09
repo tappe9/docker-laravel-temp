@@ -1,3 +1,11 @@
+init:
+	@make build
+	mkdir -p src
+	composer create-project --prefer-dist laravel/laravel src
+	chmod -R +x src/
+	chmod -R 777 src/storage src/bootstrap/cache
+	php src/artisan storage:link
+	@make up
 install:
 	@make build
 	@make up
